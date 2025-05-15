@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBridge - Bridging Students and Teachers</title>
+    <title>Spark Education</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
     <style>
         body {
@@ -300,8 +300,7 @@
 <body>
     <header class="header">
         <a href="index.php" class="logo">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Logo" class="logo-img">
-            <span class="logo-text">EduBridge</span>
+            <span class="logo-text">Spark Education</span>
         </a>
         <div class="header-buttons">
             <a href="login.php">Be a part of us</a>
