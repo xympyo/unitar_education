@@ -8,7 +8,11 @@ app = Flask(__name__)
 CORS(app)
 
 # --- CONFIG ---
-FIREWORKS_API_KEY = "fw_3ZKRcdUjGQN8ea8kyb8DMZzd"  # Replace with your Fireworks key
+# Load API key securely from environment variable
+from dotenv import load_dotenv
+import os
+load_dotenv()
+FIREWORKS_API_KEY = os.environ.get("FIREWORKS_API_KEY")  # Set this in your .env file
 FIREWORKS_URL = "https://api.fireworks.ai/inference/v1/chat/completions"
 
 # --- DB CONFIG (adjust as needed) ---
