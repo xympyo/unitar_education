@@ -82,7 +82,6 @@
         .main-scroll {
             padding: 38px 5vw 38px 5vw;
             max-width: 1050px;
-            margin: 0 auto;
         }
 
         .dashboard-header {
@@ -326,8 +325,50 @@
     <script>
         // Dummy data
         const classes = [{
-                name: 'Class A',
+                name: 'Math',
                 students: [{
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
+                        name: 'Alice',
+                        participation: 2,
+                        understanding: 3,
+                        behavior: 2,
+                        emotional: 4
+                    }, {
                         name: 'Alice',
                         participation: 2,
                         understanding: 3,
@@ -351,7 +392,25 @@
                 ]
             },
             {
-                name: 'Class B',
+                name: 'Biology',
+                students: [{
+                        name: 'David',
+                        participation: 2,
+                        understanding: 2,
+                        behavior: 3,
+                        emotional: 2
+                    },
+                    {
+                        name: 'Eva',
+                        participation: 4,
+                        understanding: 4,
+                        behavior: 4,
+                        emotional: 4
+                    }
+                ]
+            },
+            {
+                name: 'Physics',
                 students: [{
                         name: 'David',
                         participation: 2,
