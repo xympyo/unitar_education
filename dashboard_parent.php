@@ -392,6 +392,11 @@ $student_name = $parent['name'] ?? 'Unknown';
         <nav class="nav">
             <button class="nav-btn active">Student Progress</button>
         </nav>
+        <div class="sidebar-bottom" style="margin-bottom: 4rem;">
+            <form action="logout.php" method="post" style="width:100%; display:flex; justify-content:center;">
+                <button type="submit" style="background:#ff3a3a; color:#fff; border:none; border-radius:12px; font-size:1.08rem; font-weight:600; padding:13px 32px; cursor:pointer; width:90%; max-width:180px;">Log Out</button>
+            </form>
+        </div>
         <div class="sidebar-bottom">
             <button class="parental-access-btn" onclick="showParentalAccess()">Parental Access</button>
         </div>
@@ -401,40 +406,46 @@ $student_name = $parent['name'] ?? 'Unknown';
             <div class="dashboard-header">Student Progress Overview</div>
             <div class="progress-table-section">
                 <style>
-                .progress-table-section {
-                    margin-bottom: 32px;
-                }
-                .progress-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    background: #fff;
-                    border-radius: 10px;
-                    overflow: hidden;
-                    box-shadow: 0 2px 12px rgba(24,119,242,0.06);
-                    font-size: 1.01em;
-                }
-                .progress-table thead th {
-                    background: #1877f2;
-                    color: #fff;
-                    padding: 14px 10px;
-                    font-weight: 700;
-                    border-bottom: 2px solid #e0eaff;
-                }
-                .progress-table tbody td {
-                    padding: 12px 10px;
-                    border-bottom: 1px solid #f2f2f2;
-                    text-align: center;
-                }
-                .progress-table tbody tr:nth-child(even) {
-                    background: #f6fafd;
-                }
-                .progress-table tbody tr:hover {
-                    background: #e7f1ff;
-                }
-                .progress-table tbody td[colspan="6"] {
-                    background: #f6fafd;
-                    font-style: italic;
-                }
+                    .progress-table-section {
+                        margin-bottom: 32px;
+                    }
+
+                    .progress-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background: #fff;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        box-shadow: 0 2px 12px rgba(24, 119, 242, 0.06);
+                        font-size: 1.01em;
+                    }
+
+                    .progress-table thead th {
+                        background: #1877f2;
+                        color: #fff;
+                        padding: 14px 10px;
+                        font-weight: 700;
+                        border-bottom: 2px solid #e0eaff;
+                    }
+
+                    .progress-table tbody td {
+                        padding: 12px 10px;
+                        border-bottom: 1px solid #f2f2f2;
+                        text-align: center;
+                    }
+
+                    .progress-table tbody tr:nth-child(even) {
+                        background: #f6fafd;
+                    }
+
+                    .progress-table tbody tr:hover {
+                        background: #e7f1ff;
+                    }
+
+                    .progress-table tbody td[colspan="6"] {
+                        background: #f6fafd;
+                        font-style: italic;
+                    }
                 </style>
                 <table class="progress-table">
                     <thead>
@@ -448,25 +459,25 @@ $student_name = $parent['name'] ?? 'Unknown';
                         </tr>
                     </thead>
                     <tbody>
-<?php if (count($reports) === 0): ?>
-    <tr>
-        <td colspan="6" style="text-align:center; color:#888; padding:32px 0; font-size:1.1em;">
-            <i class="fas fa-info-circle" style="color:#1877f2;font-size:1.5em;"></i><br>No progress reports found for this student.
-        </td>
-    </tr>
-<?php else: ?>
-    <?php foreach ($reports as $report): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($report['created_at'] ?? '-'); ?></td>
-            <td><?php echo htmlspecialchars($report['participation'] ?? '-'); ?></td>
-            <td><?php echo htmlspecialchars($report['understanding'] ?? '-'); ?></td>
-            <td><?php echo htmlspecialchars($report['behavior'] ?? '-'); ?></td>
-            <td><?php echo htmlspecialchars($report['emotional'] ?? '-'); ?></td>
-            <td><?php echo htmlspecialchars($report['notes'] ?? '-'); ?></td>
-        </tr>
-    <?php endforeach; ?>
-<?php endif; ?>
-</tbody>
+                        <?php if (count($reports) === 0): ?>
+                            <tr>
+                                <td colspan="6" style="text-align:center; color:#888; padding:32px 0; font-size:1.1em;">
+                                    <i class="fas fa-info-circle" style="color:#1877f2;font-size:1.5em;"></i><br>No progress reports found for this student.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($reports as $report): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($report['created_at'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($report['participation'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($report['understanding'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($report['behavior'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($report['emotional'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($report['notes'] ?? '-'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
                 </table>
             </div>
             <div class="charts-row">
@@ -534,204 +545,215 @@ $student_name = $parent['name'] ?? 'Unknown';
                 </div>
             </div>
             <style>
-            .bento-insights-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                gap: 18px;
-                margin: 32px 0 24px 0;
-            }
-            .bento-card {
-                background: linear-gradient(120deg, #e9f4ff 70%, #c2e9fb 100%);
-                border-radius: 18px;
-                box-shadow: 0 4px 16px rgba(24,119,242,0.08);
-                padding: 26px 18px 20px 18px;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                transition: transform 0.16s, box-shadow 0.16s;
-                position: relative;
-                min-height: 140px;
-                cursor: pointer;
-                border: 2px solid #e0eaff;
-            }
-            .bento-card:hover {
-                transform: translateY(-5px) scale(1.03);
-                box-shadow: 0 8px 24px rgba(24,119,242,0.18);
-                border-color: #80c6ff;
-                background: linear-gradient(120deg, #d6ecff 60%, #b3e0fa 100%);
-            }
-            .bento-icon {
-                font-size: 2.2rem;
-                color: #1877f2;
-                margin-bottom: 12px;
-            }
-            .bento-title {
-                font-size: 1.13rem;
-                font-weight: 700;
-                color: #165ecb;
-                margin-bottom: 7px;
-            }
-            .bento-content {
-                font-size: 1.01rem;
-                color: #222;
-                min-height: 32px;
-            }
-            @media (max-width: 700px) {
                 .bento-insights-grid {
-                    grid-template-columns: 1fr;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                    gap: 18px;
+                    margin: 32px 0 24px 0;
                 }
-            }
+
+                .bento-card {
+                    background: linear-gradient(120deg, #e9f4ff 70%, #c2e9fb 100%);
+                    border-radius: 18px;
+                    box-shadow: 0 4px 16px rgba(24, 119, 242, 0.08);
+                    padding: 26px 18px 20px 18px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    transition: transform 0.16s, box-shadow 0.16s;
+                    position: relative;
+                    min-height: 140px;
+                    cursor: pointer;
+                    border: 2px solid #e0eaff;
+                }
+
+                .bento-card:hover {
+                    transform: translateY(-5px) scale(1.03);
+                    box-shadow: 0 8px 24px rgba(24, 119, 242, 0.18);
+                    border-color: #80c6ff;
+                    background: linear-gradient(120deg, #d6ecff 60%, #b3e0fa 100%);
+                }
+
+                .bento-icon {
+                    font-size: 2.2rem;
+                    color: #1877f2;
+                    margin-bottom: 12px;
+                }
+
+                .bento-title {
+                    font-size: 1.13rem;
+                    font-weight: 700;
+                    color: #165ecb;
+                    margin-bottom: 7px;
+                }
+
+                .bento-content {
+                    font-size: 1.01rem;
+                    color: #222;
+                    min-height: 32px;
+                }
+
+                @media (max-width: 700px) {
+                    .bento-insights-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
             </style>
             <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetch('http://127.0.0.1:5000/ai_recommendation', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ parent_email: '<?php echo $_SESSION['parent_email']; ?>' })
-                })
-                .then(response => response.json())
-                .then(data => {
-                        // AI Notes
-                        document.getElementById('aiNotesLoading').style.display = 'none';
-                        if (data.ai_notes) {
-                            document.getElementById('aiNotes').textContent = data.ai_notes;
-                            document.getElementById('aiNotes').style.display = '';
-                        } else if (data.error) {
-                            document.getElementById('aiNotes').textContent = data.error;
-                            document.getElementById('aiNotes').style.display = '';
-                        }
-                        // Video for Improvement
-                        document.getElementById('youtubeImproveLoading').style.display = 'none';
-                        if (data.youtube_link_to_improve) {
-                            let ytId = extractYouTubeId(data.youtube_link_to_improve);
-                            let thumbUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : '';
-                            // Check if video exists via oEmbed
-                            if (ytId === 'dQw4w9WgXcQ') {
-    document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Blocked video for your safety. Please try again for a different recommendation.</span>';
-} else if (ytId) {
-                                fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${ytId}&format=json`)
-                                    .then(resp => {
-                                        if (resp.ok) {
-                                            // Check if thumbnail exists
-                                            const img = new Image();
-                                            img.onload = function() {
-                                                document.getElementById('youtubeImproveLink').href = data.youtube_link_to_improve;
-                                                document.getElementById('youtubeImproveThumb').src = thumbUrl;
-                                                document.getElementById('youtubeImproveLink').style.display = '';
-                                            };
-                                            img.onerror = function() {
-                                                document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">YouTube thumbnail does not exist.</span>';
-                                            };
-                                            img.src = thumbUrl;
-                                        } else {
-                                            document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">YouTube video does not exist.</span>';
-                                        }
-                                    })
-                                    .catch(() => {
-                                        document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Failed to check YouTube video.</span>';
-                                    });
-                            } else {
-                                document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Invalid YouTube link.</span>';
+                document.addEventListener('DOMContentLoaded', function() {
+                    fetch('http://127.0.0.1:5000/ai_recommendation', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                parent_email: '<?php echo $_SESSION['parent_email']; ?>'
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // AI Notes
+                            document.getElementById('aiNotesLoading').style.display = 'none';
+                            if (data.ai_notes) {
+                                document.getElementById('aiNotes').textContent = data.ai_notes;
+                                document.getElementById('aiNotes').style.display = '';
+                            } else if (data.error) {
+                                document.getElementById('aiNotes').textContent = data.error;
+                                document.getElementById('aiNotes').style.display = '';
                             }
-                        } else {
-                            document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#888">No YouTube video provided.<br>You should explore more interesting content together!</span>';
-                        }
-                        // Video You Might Like
-                        document.getElementById('youtubeLikeLoading').style.display = 'none';
-                        if (data.youtube_link_for_improving) {
-                            let ytId = extractYouTubeId(data.youtube_link_for_improving);
-                            let thumbUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : '';
-                            if (ytId === 'dQw4w9WgXcQ') {
-    document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Blocked video for your safety. Please try again for a different recommendation.</span>';
-} else if (ytId) {
-                                fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${ytId}&format=json`)
-                                    .then(resp => {
-                                        if (resp.ok) {
-                                            const img = new Image();
-                                            img.onload = function() {
-                                                document.getElementById('youtubeLikeLink').href = data.youtube_link_for_improving;
-                                                document.getElementById('youtubeLikeThumb').src = thumbUrl;
-                                                document.getElementById('youtubeLikeLink').style.display = '';
-                                            };
-                                            img.onerror = function() {
-                                                document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">YouTube thumbnail does not exist.</span>';
-                                            };
-                                            img.src = thumbUrl;
-                                        } else {
-                                            document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">YouTube video does not exist.</span>';
-                                        }
-                                    })
-                                    .catch(() => {
-                                        document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">Failed to check YouTube video.</span>';
-                                    });
+                            // Video for Improvement
+                            document.getElementById('youtubeImproveLoading').style.display = 'none';
+                            if (data.youtube_link_to_improve) {
+                                let ytId = extractYouTubeId(data.youtube_link_to_improve);
+                                let thumbUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : '';
+                                // Check if video exists via oEmbed
+                                if (ytId === 'dQw4w9WgXcQ') {
+                                    document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Blocked video for your safety. Please try again for a different recommendation.</span>';
+                                } else if (ytId) {
+                                    fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${ytId}&format=json`)
+                                        .then(resp => {
+                                            if (resp.ok) {
+                                                // Check if thumbnail exists
+                                                const img = new Image();
+                                                img.onload = function() {
+                                                    document.getElementById('youtubeImproveLink').href = data.youtube_link_to_improve;
+                                                    document.getElementById('youtubeImproveThumb').src = thumbUrl;
+                                                    document.getElementById('youtubeImproveLink').style.display = '';
+                                                };
+                                                img.onerror = function() {
+                                                    document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">YouTube thumbnail does not exist.</span>';
+                                                };
+                                                img.src = thumbUrl;
+                                            } else {
+                                                document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">YouTube video does not exist.</span>';
+                                            }
+                                        })
+                                        .catch(() => {
+                                            document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Failed to check YouTube video.</span>';
+                                        });
+                                } else {
+                                    document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Invalid YouTube link.</span>';
+                                }
                             } else {
-                                document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">Invalid YouTube link.</span>';
+                                document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#888">No YouTube video provided.<br>You should explore more interesting content together!</span>';
                             }
-                        } else {
-                            document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#888">No YouTube video provided.<br>You should explore more interesting content together!</span>';
-                        }
-                        // AI Features
-                        // Future Career
-                        document.getElementById('futureCareerLoading').style.display = 'none';
-                        if (data.future_career) {
-                            document.getElementById('futureCareer').textContent = data.future_career;
+                            // Video You Might Like
+                            document.getElementById('youtubeLikeLoading').style.display = 'none';
+                            if (data.youtube_link_for_improving) {
+                                let ytId = extractYouTubeId(data.youtube_link_for_improving);
+                                let thumbUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : '';
+                                if (ytId === 'dQw4w9WgXcQ') {
+                                    document.getElementById('youtubeImproveSection').innerHTML = '<span style="color:#b00">Blocked video for your safety. Please try again for a different recommendation.</span>';
+                                } else if (ytId) {
+                                    fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${ytId}&format=json`)
+                                        .then(resp => {
+                                            if (resp.ok) {
+                                                const img = new Image();
+                                                img.onload = function() {
+                                                    document.getElementById('youtubeLikeLink').href = data.youtube_link_for_improving;
+                                                    document.getElementById('youtubeLikeThumb').src = thumbUrl;
+                                                    document.getElementById('youtubeLikeLink').style.display = '';
+                                                };
+                                                img.onerror = function() {
+                                                    document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">YouTube thumbnail does not exist.</span>';
+                                                };
+                                                img.src = thumbUrl;
+                                            } else {
+                                                document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">YouTube video does not exist.</span>';
+                                            }
+                                        })
+                                        .catch(() => {
+                                            document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">Failed to check YouTube video.</span>';
+                                        });
+                                } else {
+                                    document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#b00">Invalid YouTube link.</span>';
+                                }
+                            } else {
+                                document.getElementById('youtubeLikeSection').innerHTML = '<span style="color:#888">No YouTube video provided.<br>You should explore more interesting content together!</span>';
+                            }
+                            // AI Features
+                            // Future Career
+                            document.getElementById('futureCareerLoading').style.display = 'none';
+                            if (data.future_career) {
+                                document.getElementById('futureCareer').textContent = data.future_career;
+                                document.getElementById('futureCareer').style.display = '';
+                            }
+                            // Child Interest
+                            document.getElementById('childInterestLoading').style.display = 'none';
+                            if (data.child_interest) {
+                                document.getElementById('childInterest').textContent = data.child_interest;
+                                document.getElementById('childInterest').style.display = '';
+                            }
+                            // Learning Style
+                            document.getElementById('learningStyleLoading').style.display = 'none';
+                            if (data.learning_style) {
+                                document.getElementById('learningStyle').textContent = data.learning_style;
+                                document.getElementById('learningStyle').style.display = '';
+                            }
+                            // Recommended Hobby
+                            document.getElementById('recommendedHobbyLoading').style.display = 'none';
+                            if (data.recommended_hobby) {
+                                document.getElementById('recommendedHobby').textContent = data.recommended_hobby;
+                                document.getElementById('recommendedHobby').style.display = '';
+                            }
+                            // Parent Tips
+                            document.getElementById('parentTipsLoading').style.display = 'none';
+                            if (data.parent_tips) {
+                                document.getElementById('parentTips').textContent = data.parent_tips;
+                                document.getElementById('parentTips').style.display = '';
+                            }
+                        })
+                        .catch(err => {
+                            document.getElementById('aiNotesLoading').style.display = 'none';
+                            document.getElementById('aiNotes').textContent = 'Failed to load AI feedback.';
+                            document.getElementById('aiNotes').style.display = '';
+                            document.getElementById('youtubeImproveLoading').style.display = 'none';
+                            document.getElementById('youtubeLikeLoading').style.display = 'none';
+                            // AI Features loading fallback
+                            document.getElementById('futureCareerLoading').style.display = 'none';
+                            document.getElementById('futureCareer').textContent = 'Failed to load.';
                             document.getElementById('futureCareer').style.display = '';
-                        }
-                        // Child Interest
-                        document.getElementById('childInterestLoading').style.display = 'none';
-                        if (data.child_interest) {
-                            document.getElementById('childInterest').textContent = data.child_interest;
+                            document.getElementById('childInterestLoading').style.display = 'none';
+                            document.getElementById('childInterest').textContent = 'Failed to load.';
                             document.getElementById('childInterest').style.display = '';
-                        }
-                        // Learning Style
-                        document.getElementById('learningStyleLoading').style.display = 'none';
-                        if (data.learning_style) {
-                            document.getElementById('learningStyle').textContent = data.learning_style;
+                            document.getElementById('learningStyleLoading').style.display = 'none';
+                            document.getElementById('learningStyle').textContent = 'Failed to load.';
                             document.getElementById('learningStyle').style.display = '';
-                        }
-                        // Recommended Hobby
-                        document.getElementById('recommendedHobbyLoading').style.display = 'none';
-                        if (data.recommended_hobby) {
-                            document.getElementById('recommendedHobby').textContent = data.recommended_hobby;
+                            document.getElementById('recommendedHobbyLoading').style.display = 'none';
+                            document.getElementById('recommendedHobby').textContent = 'Failed to load.';
                             document.getElementById('recommendedHobby').style.display = '';
-                        }
-                        // Parent Tips
-                        document.getElementById('parentTipsLoading').style.display = 'none';
-                        if (data.parent_tips) {
-                            document.getElementById('parentTips').textContent = data.parent_tips;
+                            document.getElementById('parentTipsLoading').style.display = 'none';
+                            document.getElementById('parentTips').textContent = 'Failed to load.';
                             document.getElementById('parentTips').style.display = '';
-                        }
-                    })
-                    .catch(err => {
-                        document.getElementById('aiNotesLoading').style.display = 'none';
-                        document.getElementById('aiNotes').textContent = 'Failed to load AI feedback.';
-                        document.getElementById('aiNotes').style.display = '';
-                        document.getElementById('youtubeImproveLoading').style.display = 'none';
-                        document.getElementById('youtubeLikeLoading').style.display = 'none';
-                        // AI Features loading fallback
-                        document.getElementById('futureCareerLoading').style.display = 'none';
-                        document.getElementById('futureCareer').textContent = 'Failed to load.';
-                        document.getElementById('futureCareer').style.display = '';
-                        document.getElementById('childInterestLoading').style.display = 'none';
-                        document.getElementById('childInterest').textContent = 'Failed to load.';
-                        document.getElementById('childInterest').style.display = '';
-                        document.getElementById('learningStyleLoading').style.display = 'none';
-                        document.getElementById('learningStyle').textContent = 'Failed to load.';
-                        document.getElementById('learningStyle').style.display = '';
-                        document.getElementById('recommendedHobbyLoading').style.display = 'none';
-                        document.getElementById('recommendedHobby').textContent = 'Failed to load.';
-                        document.getElementById('recommendedHobby').style.display = '';
-                        document.getElementById('parentTipsLoading').style.display = 'none';
-                        document.getElementById('parentTips').textContent = 'Failed to load.';
-                        document.getElementById('parentTips').style.display = '';
-                    });
-                function extractYouTubeId(url) {
-                    let match = url.match(/[?&]v=([^&#]+)/);
-                    if (match && match[1]) return match[1];
-                    match = url.match(/youtu\.be\/([^?&#]+)/);
-                    return match && match[1] ? match[1] : null;
-                }
-            });
+                        });
+
+                    function extractYouTubeId(url) {
+                        let match = url.match(/[?&]v=([^&#]+)/);
+                        if (match && match[1]) return match[1];
+                        match = url.match(/youtu\.be\/([^?&#]+)/);
+                        return match && match[1] ? match[1] : null;
+                    }
+                });
             </script>
         </div>
     </div>
@@ -744,8 +766,21 @@ $student_name = $parent['name'] ?? 'Unknown';
                 <div class="parental-section-title"><i class="fas fa-book"></i> Student Report History</div>
                 <div id="parentalReportTableWrap">
                     <table class="parental-table">
-                        <thead><tr><th>Class</th><th>Participation</th><th>Understanding</th><th>Behavior</th><th>Emotional</th><th>Notes</th></tr></thead>
-                        <tbody id="parentalReportTableBody"><tr><td colspan="6">Loading...</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Participation</th>
+                                <th>Understanding</th>
+                                <th>Behavior</th>
+                                <th>Emotional</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parentalReportTableBody">
+                            <tr>
+                                <td colspan="6">Loading...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -753,8 +788,18 @@ $student_name = $parent['name'] ?? 'Unknown';
                 <div class="parental-section-title"><i class="fas fa-chalkboard-teacher"></i> Teacher Requests</div>
                 <div id="parentalTeacherTableWrap">
                     <table class="parental-table">
-                        <thead><tr><th>Teacher</th><th>Email</th><th>Action</th></tr></thead>
-                        <tbody id="parentalTeacherTableBody"><tr><td colspan="3">Loading...</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>Teacher</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parentalTeacherTableBody">
+                            <tr>
+                                <td colspan="3">Loading...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -777,150 +822,247 @@ $student_name = $parent['name'] ?? 'Unknown';
         </div>
     </div>
     <style>
-    .parental-modal-bg {
-        position: fixed; left: 0; top: 0; right: 0; bottom: 0;
-        background: rgba(24,119,242,0.15); z-index: 2000;
-        display: flex; justify-content: center; align-items: center;
-    }
-    .parental-modal {
-        background: #fff; border-radius: 18px; box-shadow: 0 8px 36px rgba(24,119,242,0.18);
-        padding: 36px 28px 28px 28px; min-width: 370px; max-width: 98vw; position: relative;
-        animation: fadeUp 0.4s cubic-bezier(.77, 0, .18, 1);
-    }
-    .close-parental-modal {
-        position: absolute; top: 18px; right: 18px; border: none; background: none; color: #1877f2;
-        font-size: 1.3rem; cursor: pointer;
-    }
-    .parental-modal-title {
-        font-size: 1.3rem; font-weight: 800; color: #1877f2; margin-bottom: 18px;
-        display: flex; align-items: center; gap: 10px;
-    }
-    .parental-modal-section { margin-bottom: 28px; }
-    .parental-section-title {
-        font-size: 1.07rem; font-weight: 700; color: #165ecb; margin-bottom: 8px;
-        display: flex; align-items: center; gap: 7px;
-    }
-    .parental-table {
-        width: 100%; border-collapse: collapse; background: #fafdff; border-radius: 10px;
-        overflow: hidden; box-shadow: 0 2px 10px rgba(24,119,242,0.06); margin-bottom: 12px;
-    }
-    .parental-table th, .parental-table td {
-        padding: 10px 8px; border-bottom: 1px solid #e3eaf5; text-align: left;
-    }
-    .parental-table th { background: #e6f0ff; color: #1877f2; font-weight: 700; }
-    .parental-table tbody tr:last-child td { border-bottom: none; }
-    .parental-table td { color: #222; }
-    .parental-input {
-        padding: 7px 13px; border-radius: 7px; border: 1.5px solid #d3e4fc; font-size: 1rem;
-        margin-right: 10px; width: 80px;
-    }
-    .parental-modal-confirm-bg {
-        position: fixed; left: 0; top: 0; right: 0; bottom: 0;
-        background: rgba(24,119,242,0.16); z-index: 2100; display: flex; justify-content: center; align-items: center;
-    }
-    .parental-modal-confirm {
-        background: #fff; border-radius: 16px; box-shadow: 0 4px 18px rgba(24,119,242,0.14);
-        padding: 28px 24px 18px 24px; min-width: 250px; text-align: center;
-    }
-    .parental-confirm-title { font-size: 1.1rem; font-weight: 700; color: #1877f2; margin-bottom: 10px; }
-    .parental-confirm-msg { margin-bottom: 18px; color: #222; }
+        .parental-modal-bg {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(24, 119, 242, 0.15);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .parental-modal {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 36px rgba(24, 119, 242, 0.18);
+            padding: 36px 28px 28px 28px;
+            min-width: 370px;
+            max-width: 98vw;
+            position: relative;
+            animation: fadeUp 0.4s cubic-bezier(.77, 0, .18, 1);
+        }
+
+        .close-parental-modal {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            border: none;
+            background: none;
+            color: #1877f2;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .parental-modal-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1877f2;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .parental-modal-section {
+            margin-bottom: 28px;
+        }
+
+        .parental-section-title {
+            font-size: 1.07rem;
+            font-weight: 700;
+            color: #165ecb;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .parental-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fafdff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(24, 119, 242, 0.06);
+            margin-bottom: 12px;
+        }
+
+        .parental-table th,
+        .parental-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e3eaf5;
+            text-align: left;
+        }
+
+        .parental-table th {
+            background: #e6f0ff;
+            color: #1877f2;
+            font-weight: 700;
+        }
+
+        .parental-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .parental-table td {
+            color: #222;
+        }
+
+        .parental-input {
+            padding: 7px 13px;
+            border-radius: 7px;
+            border: 1.5px solid #d3e4fc;
+            font-size: 1rem;
+            margin-right: 10px;
+            width: 80px;
+        }
+
+        .parental-modal-confirm-bg {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(24, 119, 242, 0.16);
+            z-index: 2100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .parental-modal-confirm {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(24, 119, 242, 0.14);
+            padding: 28px 24px 18px 24px;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .parental-confirm-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1877f2;
+            margin-bottom: 10px;
+        }
+
+        .parental-confirm-msg {
+            margin-bottom: 18px;
+            color: #222;
+        }
     </style>
     <script>
-    function showParentalAccess() {
-        document.getElementById('parentalModalBg').style.display = 'flex';
-        loadParentalReport();
-        loadParentalTeachers();
-        loadParentalClass();
-    }
-    function closeParentalAccess() {
-        document.getElementById('parentalModalBg').style.display = 'none';
-    }
-    function loadParentalReport() {
-        fetch('parental_access.php?action=get_report_history')
-            .then(res => res.json())
-            .then(data => {
-                let html = '';
-                if (data.data && data.data.length) {
-                    data.data.forEach(r => {
-                        html += `<tr><td>${r.class||'-'}</td><td>${r.participation}</td><td>${r.understanding}</td><td>${r.behavior}</td><td>${r.emotional}</td><td>${r.notes||''}</td></tr>`;
-                    });
-                } else {
-                    html = '<tr><td colspan="6">No report history found.</td></tr>';
-                }
-                document.getElementById('parentalReportTableBody').innerHTML = html;
-            });
-    }
-    function loadParentalTeachers() {
-        fetch('parental_access.php?action=get_teacher_requests')
-            .then(res => res.json())
-            .then(data => {
-                let html = '';
-                if (data.data && data.data.length) {
-                    data.data.forEach(r => {
-                        html += `<tr><td>${r.name}</td><td>${r.email}</td><td>`;
-                        if (r.approved == 1) {
-                            html += '<span style="color:#27c96e;font-weight:700;">Approved</span>';
-                        } else {
-                            html += `<button class='submit-btn' style='padding:6px 18px;border-radius:7px;background:#1877f2;color:#fff;border:none;cursor:pointer;' onclick='showParentalConfirm(${r.id})'>Approve</button>`;
-                        }
-                        html += '</td></tr>';
-                    });
-                } else {
-                    html = '<tr><td colspan="3">No teacher requests found.</td></tr>';
-                }
-                document.getElementById('parentalTeacherTableBody').innerHTML = html;
-            });
-    }
-    let approveId = null;
-    function showParentalConfirm(id) {
-        approveId = id;
-        document.getElementById('parentalConfirmBg').style.display = 'flex';
-        document.getElementById('parentalConfirmBtn').onclick = approveParentalTeacher;
-    }
-    function closeParentalConfirm() {
-        document.getElementById('parentalConfirmBg').style.display = 'none';
-        approveId = null;
-    }
-    function approveParentalTeacher() {
-        if (!approveId) return;
-        fetch('parental_access.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `action=approve_teacher&id=${approveId}`
-        })
-        .then(res => res.json())
-        .then(data => {
-            closeParentalConfirm();
+        function showParentalAccess() {
+            document.getElementById('parentalModalBg').style.display = 'flex';
+            loadParentalReport();
             loadParentalTeachers();
-        });
-    }
-    function loadParentalClass() {
-        fetch('parental_access.php?action=get_report_history')
-            .then(res => res.json())
-            .then(data => {
-                // Use first row's class if available
-                let cls = (data.data && data.data.length) ? data.data[0].class : '';
-                document.getElementById('parentalClassInput').value = cls || '';
-            });
-    }
-    function updateClass() {
-        let val = document.getElementById('parentalClassInput').value;
-        fetch('parental_access.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `action=update_class&new_class=${val}`
-        })
-        .then(res => res.json())
-        .then(data => {
-            let msg = document.getElementById('parentalClassMsg');
-            if (data.success) {
-                msg.innerHTML = '<span style="color:#27c96e;font-weight:700;">Updated!</span>';
-            } else {
-                msg.innerHTML = `<span style='color:#e74c3c;'>${data.error||'Failed.'}</span>`;
-            }
-        });
-        return false;
-    }
+            loadParentalClass();
+        }
+
+        function closeParentalAccess() {
+            document.getElementById('parentalModalBg').style.display = 'none';
+        }
+
+        function loadParentalReport() {
+            fetch('parental_access.php?action=get_report_history')
+                .then(res => res.json())
+                .then(data => {
+                    let html = '';
+                    if (data.data && data.data.length) {
+                        data.data.forEach(r => {
+                            html += `<tr><td>${r.class||'-'}</td><td>${r.participation}</td><td>${r.understanding}</td><td>${r.behavior}</td><td>${r.emotional}</td><td>${r.notes||''}</td></tr>`;
+                        });
+                    } else {
+                        html = '<tr><td colspan="6">No report history found.</td></tr>';
+                    }
+                    document.getElementById('parentalReportTableBody').innerHTML = html;
+                });
+        }
+
+        function loadParentalTeachers() {
+            fetch('parental_access.php?action=get_teacher_requests')
+                .then(res => res.json())
+                .then(data => {
+                    let html = '';
+                    if (data.data && data.data.length) {
+                        data.data.forEach(r => {
+                            html += `<tr><td>${r.name}</td><td>${r.email}</td><td>`;
+                            if (r.approved == 1) {
+                                html += '<span style="color:#27c96e;font-weight:700;">Approved</span>';
+                            } else {
+                                html += `<button class='submit-btn' style='padding:6px 18px;border-radius:7px;background:#1877f2;color:#fff;border:none;cursor:pointer;' onclick='showParentalConfirm(${r.id})'>Approve</button>`;
+                            }
+                            html += '</td></tr>';
+                        });
+                    } else {
+                        html = '<tr><td colspan="3">No teacher requests found.</td></tr>';
+                    }
+                    document.getElementById('parentalTeacherTableBody').innerHTML = html;
+                });
+        }
+        let approveId = null;
+
+        function showParentalConfirm(id) {
+            approveId = id;
+            document.getElementById('parentalConfirmBg').style.display = 'flex';
+            document.getElementById('parentalConfirmBtn').onclick = approveParentalTeacher;
+        }
+
+        function closeParentalConfirm() {
+            document.getElementById('parentalConfirmBg').style.display = 'none';
+            approveId = null;
+        }
+
+        function approveParentalTeacher() {
+            if (!approveId) return;
+            fetch('parental_access.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `action=approve_teacher&id=${approveId}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    closeParentalConfirm();
+                    loadParentalTeachers();
+                });
+        }
+
+        function loadParentalClass() {
+            fetch('parental_access.php?action=get_report_history')
+                .then(res => res.json())
+                .then(data => {
+                    // Use first row's class if available
+                    let cls = (data.data && data.data.length) ? data.data[0].class : '';
+                    document.getElementById('parentalClassInput').value = cls || '';
+                });
+        }
+
+        function updateClass() {
+            let val = document.getElementById('parentalClassInput').value;
+            fetch('parental_access.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `action=update_class&new_class=${val}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    let msg = document.getElementById('parentalClassMsg');
+                    if (data.success) {
+                        msg.innerHTML = '<span style="color:#27c96e;font-weight:700;">Updated!</span>';
+                    } else {
+                        msg.innerHTML = `<span style='color:#e74c3c;'>${data.error||'Failed.'}</span>`;
+                    }
+                });
+            return false;
+        }
     </script>
     <!-- PIN POPUP -->
     <div class="pin-popup-bg" id="pinPopupBg">

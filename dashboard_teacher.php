@@ -495,6 +495,11 @@ while ($row = $students_result->fetch_assoc()) {
             <button class="nav-btn" id="navAddReport" onclick="showSection('addReport')">Add Report</button>
             <button class="nav-btn" id="navAssignStudent" onclick="showSection('assignStudent')">Assign Student</button>
         </nav>
+        <div style="margin-top:auto; width:100%; display:flex; justify-content:center; padding-bottom:18px;">
+            <form action="logout.php" method="post" style="width:100%; display:flex; justify-content:center;">
+                <button type="submit" style="background:#ff3a3a; color:#fff; border:none; border-radius:12px; font-size:1.08rem; font-weight:600; padding:13px 32px; cursor:pointer; width:90%; max-width:180px; margin-top:12px;">Log Out</button>
+            </form>
+        </div>
     </div>
     <div class="main-content">
         <div class="main-scroll" id="mainScroll"></div>

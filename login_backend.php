@@ -69,6 +69,7 @@ if ($action === 'login') {
         respond(['status'=>'success','type'=>'parent']);
     } elseif ($valid_teacher) {
         $_SESSION['teacher_email'] = $email;
+        $_SESSION['teacher_id'] = $found_teacher['user_id'];
         respond(['status'=>'success','type'=>'teacher']);
     } else {
         respond(['status'=>'error','message'=>'Email or password is incorrect.']);
