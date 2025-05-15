@@ -310,6 +310,7 @@
                 <button class="toggle-btn active" id="loginTab">Login</button>
                 <button class="toggle-btn" id="registerTab">Register</button>
             </div>
+            <div id="loginError" class="error-message" style="text-align:center;"></div>
             <form id="loginForm" autocomplete="off">
                 <div class="form-group">
                     <label for="loginEmail">Email</label>
@@ -322,6 +323,7 @@
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
             </form>
+            <div id="registerError" class="error-message" style="text-align:center;display:none;"></div>
             <form id="registerForm" style="display:none;" autocomplete="off">
                 <div class="sub-toggle-row">
                     <button class="sub-toggle-btn active" id="teacherTab">I'm a Teacher</button>
@@ -377,6 +379,9 @@
                     <button type="submit" class="submit-btn">Register as Parent</button>
                 </div>
             </form>
+            <div style="margin-top: 26px; text-align: center;">
+                <a href="login_teacher.php" style="color: #27c96e; font-weight: 600; text-decoration: underline; cursor: pointer;">Are you a Teacher?</a>
+            </div>
         </div>
     </div>
     <script>
@@ -402,6 +407,31 @@
             loginForm.style.display = 'none';
             registerForm.style.display = '';
         });
+        function setTeacherRequired() {
+            // Enable required for teacher, disable for parent
+            document.getElementById('teacherName').required = true;
+            document.getElementById('teacherEmail').required = true;
+            document.getElementById('teacherPassword').required = true;
+            document.getElementById('teacherConfirmPassword').required = true;
+            document.getElementById('parentName').required = false;
+            document.getElementById('parentEmail').required = false;
+            document.getElementById('parentPassword').required = false;
+            document.getElementById('parentConfirmPassword').required = false;
+            document.getElementById('parentPin').required = false;
+        }
+        function setParentRequired() {
+            // Enable required for parent, disable for teacher
+            document.getElementById('teacherName').required = false;
+            document.getElementById('teacherEmail').required = false;
+            document.getElementById('teacherPassword').required = false;
+            document.getElementById('teacherConfirmPassword').required = false;
+            document.getElementById('parentName').required = true;
+            document.getElementById('parentEmail').required = true;
+            document.getElementById('parentPassword').required = true;
+            document.getElementById('parentConfirmPassword').required = true;
+            document.getElementById('parentPin').required = true;
+        }
+
         teacherTab.addEventListener('click', function(e) {
             e.preventDefault();
             teacherTab.classList.add('active');
@@ -410,6 +440,7 @@
             parentForm.style.display = 'none';
             teacherForm.classList.add('fade');
             parentForm.classList.remove('fade');
+            setTeacherRequired();
         });
         parentTab.addEventListener('click', function(e) {
             e.preventDefault();
@@ -419,7 +450,10 @@
             parentForm.style.display = '';
             parentForm.classList.add('fade');
             teacherForm.classList.remove('fade');
+            setParentRequired();
         });
+// Set initial required fields for teacher by default
+setTeacherRequired();
 
         // Password show/hide toggle
         function togglePassword(fieldId, btn) {
@@ -500,26 +534,68 @@
         // Login form submit
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            document.getElementById('loginError').textContent = '';
             const email = document.getElementById('loginEmail').value;
             const pw = document.getElementById('loginPassword').value;
-            hashPassword(pw).then(hash => {
-                // Connect to backend here
-                alert('Login submitted! Email: ' + email + '\nPassword Hash: ' + hash);
+            fetch('login_backend.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action: 'login', email, password: pw}),
+                credentials: 'include'
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (data.type === 'choose') {
+                        showChoosePopup();
+                    } else if (data.type === 'parent') {
+                        window.location.href = 'dashboard_parent.php';
+                    } else if (data.type === 'teacher') {
+                        window.location.href = 'dashboard_teacher.php';
+                    }
+                } else {
+                    document.getElementById('loginError').textContent = data.message;
+                }
+            }).catch(() => {
+                document.getElementById('loginError').textContent = 'Network error.';
             });
         });
         // Register form submit
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            document.getElementById('registerError').style.display = 'none';
+            document.getElementById('registerError').textContent = '';
             let formType = teacherTab.classList.contains('active') ? 'teacher' : 'parent';
             if (formType === 'teacher') {
                 const name = document.getElementById('teacherName').value;
                 const email = document.getElementById('teacherEmail').value;
                 const pw = document.getElementById('teacherPassword').value;
                 const cpw = document.getElementById('teacherConfirmPassword').value;
-                if (pw !== cpw) return;
-                hashPassword(pw).then(hash => {
-                    // Connect to backend here
-                    alert('Register Teacher! Name: ' + name + '\nEmail: ' + email + '\nPassword Hash: ' + hash);
+                if (pw !== cpw) {
+                    document.getElementById('registerError').style.display = '';
+                    document.getElementById('registerError').textContent = 'Passwords do not match.';
+                    return;
+                }
+                const btn = registerForm.querySelector('.submit-btn');
+                btn.disabled = true;
+                fetch('login_backend.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({action: 'register_teacher', name, email, password: pw})
+                })
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    if (data.status === 'success') {
+                        window.location.href = 'dashboard_teacher.php';
+                    } else {
+                        document.getElementById('registerError').style.display = '';
+                        document.getElementById('registerError').textContent = data.message;
+                    }
+                }).catch(() => {
+                    btn.disabled = false;
+                    document.getElementById('registerError').style.display = '';
+                    document.getElementById('registerError').textContent = 'Network error.';
                 });
             } else {
                 const name = document.getElementById('parentName').value;
@@ -527,13 +603,57 @@
                 const pw = document.getElementById('parentPassword').value;
                 const cpw = document.getElementById('parentConfirmPassword').value;
                 const pin = document.getElementById('parentPin').value;
-                if (pw !== cpw || !/^\d{6}$/.test(pin)) return;
-                hashPassword(pw).then(hash => {
-                    // Connect to backend here
-                    alert('Register Parent! Student Name: ' + name + '\nEmail: ' + email + '\nPassword Hash: ' + hash + '\nPIN: ' + pin);
+                if (pw !== cpw) {
+                    document.getElementById('registerError').style.display = '';
+                    document.getElementById('registerError').textContent = 'Passwords do not match.';
+                    return;
+                }
+                if (!/^\d{6}$/.test(pin)) {
+                    document.getElementById('registerError').style.display = '';
+                    document.getElementById('registerError').textContent = 'PIN must be exactly 6 digits.';
+                    return;
+                }
+                const btn = registerForm.querySelector('.submit-btn');
+                btn.disabled = true;
+                fetch('login_backend.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({action: 'register_student', name, email, password: pw, parent_pin: pin})
+                })
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    if (data.status === 'success') {
+                        window.location.href = 'dashboard_parent.php';
+                    } else {
+                        document.getElementById('registerError').style.display = '';
+                        document.getElementById('registerError').textContent = data.message;
+                    }
+                }).catch(() => {
+                    btn.disabled = false;
+                    document.getElementById('registerError').style.display = '';
+                    document.getElementById('registerError').textContent = 'Network error.';
                 });
             }
         });
+
+        // Helper: show error
+        function showError(msg) {
+            document.getElementById('registerError').style.display = '';
+            document.getElementById('registerError').textContent = msg;
+        }
+        // Helper: show choose popup
+        function showChoosePopup() {
+            const popup = document.createElement('div');
+            popup.innerHTML = `<div style='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(0,0,0,0.18);display:flex;align-items:center;justify-content:center;'>
+                <div style='background:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 2px 16px rgba(24,119,242,0.12);min-width:280px;text-align:center;'>
+                    <div style='font-size:1.2rem;font-weight:700;margin-bottom:18px;'>Log In</div>
+                    <button style='margin:8px 0 10px 0;width:100%;padding:12px 0;background:#1877f2;color:#fff;font-weight:700;border:none;border-radius:9px;font-size:1.05rem;cursor:pointer;' onclick='window.location.href="dashboard_parent.php"'>As Parents</button>
+                    <button style='width:100%;padding:12px 0;background:#27c96e;color:#fff;font-weight:700;border:none;border-radius:9px;font-size:1.05rem;cursor:pointer;' onclick='window.location.href="dashboard_teacher.php"'>As Teacher</button>
+                </div>
+            </div>`;
+            document.body.appendChild(popup);
+        }
     </script>
 </body>
 

@@ -16,7 +16,8 @@
 
 
 -- Dumping database structure for edu_users
-CREATE DATABASE IF NOT EXISTS `edu_users` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE
+IF NOT EXISTS `edu_users` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `edu_users`;
 
 -- Dumping structure for table edu_users.parents_students
@@ -25,19 +26,34 @@ CREATE TABLE IF NOT EXISTS `parents_students` (
   `parent_pin` int NOT NULL DEFAULT '0',
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `classes` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`student_id`) USING BTREE,
-  UNIQUE KEY `parent_pin` (`parent_pin`)
+  `password` varchar(255) DEFAULT NULL,
+  `classes` int DEFAULT NULL CHECK (`classes` >= 1 AND `classes` <= 12),
+  PRIMARY KEY (`student_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping structure for table edu_users.teachers
+CREATE TABLE IF NOT EXISTS `teachers` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Sample insert for a teacher user (password is 'password' hashed)
+INSERT INTO `teachers` (`name`, `email`, `password`) VALUES ('Sample Teacher', 'teacher@example.com', '$2y$10$eImiTXuWVxfM37uY4JANjQ==');
 
 -- Dumping data for table edu_users.parents_students: ~0 rows (approximately)
 
 -- Dumping structure for table edu_users.report_history
-CREATE TABLE IF NOT EXISTS `report_history` (
-  `report_id` int NOT NULL,
-  `class` varchar(50) DEFAULT NULL,
-  `std_name` varchar(100) DEFAULT NULL,
+CREATE TABLE
+IF NOT EXISTS `report_history`
+(
+  `report_id` int NOT NULL AUTO_INCREMENT,
+  `class` varchar
+(50) DEFAULT NULL,
+  `std_name` varchar
+(100) DEFAULT NULL,
   `participation` int DEFAULT NULL,
   `understanding` int DEFAULT NULL,
   `behavior` int DEFAULT NULL,
@@ -45,25 +61,45 @@ CREATE TABLE IF NOT EXISTS `report_history` (
   `notes` varchar(255) DEFAULT NULL,
   `student_id` int DEFAULT NULL,
   `teacher_id` int DEFAULT NULL,
-  PRIMARY KEY (`report_id`),
-  KEY `student_id` (`student_id`),
-  KEY `teacher_id` (`teacher_id`),
-  CONSTRAINT `report_history_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `parents_students` (`student_id`),
-  CONSTRAINT `report_history_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`user_id`)
+  PRIMARY KEY
+(`report_id`),
+  KEY `student_id`
+(`student_id`),
+  KEY `teacher_id`
+(`teacher_id`),
+  CONSTRAINT `report_history_ibfk_1` FOREIGN KEY
+(`student_id`) REFERENCES `parents_students`
+(`student_id`),
+  CONSTRAINT `report_history_ibfk_2` FOREIGN KEY
+(`teacher_id`) REFERENCES `teachers`
+(`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Table for teacher-student assignment requests
+CREATE TABLE IF NOT EXISTS `teacher_student_requests` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `teacher_id` INT NOT NULL,
+  `student_id` INT NOT NULL,
+  `approved` TINYINT(1) DEFAULT 0,
+  FOREIGN KEY (`teacher_id`) REFERENCES `teachers`(`user_id`),
+  FOREIGN KEY (`student_id`) REFERENCES `parents_students`(`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table edu_users.report_history: ~0 rows (approximately)
 
 -- Dumping structure for table edu_users.teachers
-CREATE TABLE IF NOT EXISTS `teachers` (
-  `teacher_pin` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `Column 3` varchar(50) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `user_id` int NOT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE,
-  UNIQUE KEY `user_id` (`teacher_pin`) USING BTREE
+CREATE TABLE
+IF NOT EXISTS `teachers`
+(
+  `name` varchar
+(50) DEFAULT NULL,
+  `email` varchar
+(50) DEFAULT NULL,
+  `password` varchar
+(255) DEFAULT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY
+(`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table edu_users.teachers: ~0 rows (approximately)
